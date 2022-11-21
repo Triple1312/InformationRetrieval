@@ -20,6 +20,8 @@ def scrape_researchgate_publications(query: str, amount: int = 5) -> json:
             page.goto(f"https://www.researchgate.net/search/publication?q={query}&page={page_num}")
             selector = Selector(text=page.content())
 
+            # print(selector.xpath("//"))
+
             for publication in selector.css(".nova-legacy-c-card__body--spacing-inherit"):
                 title = publication.css(
                     ".nova-legacy-v-publication-item__title .nova-legacy-e-link--theme-bare::text").get().title()
@@ -47,7 +49,7 @@ def scrape_researchgate_publications(query: str, amount: int = 5) -> json:
                     "authors": authors
                 })
 
-            print(f"page number: {page_num}")
+            # print(f"page number: {page_num}")
 
             # checks if next page arrow key is greyed out `attr(rel)` (inactive) and breaks out of the loop
             if selector.css(".nova-legacy-c-button-group__item:nth-child(9) a::attr(rel)").get():
@@ -55,11 +57,11 @@ def scrape_researchgate_publications(query: str, amount: int = 5) -> json:
             else:
                 page_num += 1
 
-        print(json.dumps(publications, indent=2, ensure_ascii=False))
+        # print(json.dumps(publications, indent=2, ensure_ascii=False))
 
         browser.close()
 
         return json.dumps(publications, indent=2, ensure_ascii=False)
 
 
-scrape_researchgate_publications(query="hamburger")
+# scrape_researchgate_publications(query="hamburger")
