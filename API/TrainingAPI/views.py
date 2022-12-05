@@ -15,13 +15,13 @@ def index(request):
     return JsonResponse(json)
 
 
-
 def document(request):
     if request.method == 'GET':
         documents = Document.objects.all()
         return JsonResponse({'documents': list(documents.values())})
     elif request.method == 'POST':
-        pass
+        pdf = request.FILES['file']
+        print(pdf)
 
 
 
