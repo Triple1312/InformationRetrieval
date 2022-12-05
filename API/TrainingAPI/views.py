@@ -9,7 +9,11 @@ from .models import Document
 
 
 def index(request):
-    return HttpResponse("Index")
+    json = {
+        'DocumentCount': Document.objects.all().count(),
+    }
+    return JsonResponse(json)
+
 
 
 def document(request):
