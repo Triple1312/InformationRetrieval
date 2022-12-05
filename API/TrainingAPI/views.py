@@ -9,10 +9,7 @@ from .models import Document
 
 
 def index(request):
-    json = {
-        'DocumentCount': Document.objects.all().count(),
-    }
-    return JsonResponse(json)
+    return render(request, 'apiv1.html')
 
 
 def document(request):
@@ -24,4 +21,26 @@ def document(request):
         print(pdf)
 
 
+def document_detail(request, pk):
+    if request.method == 'GET':
+        pdf = Document.objects.get(pk=pk)
+        return JsonResponse({'document': pdf})
+
+
+def train(request):
+    pass
+
+
+def document_view(request):
+    context = {
+        'documents': Document.objects.all()
+    }
+    return render(request, 'document_view.html', context)
+
+
+def document_detail_view(request, title):
+    context = {
+        'document': Document.objects.get(pk=title)
+    }
+    return render(request, 'document_detail_view.html', context)
 

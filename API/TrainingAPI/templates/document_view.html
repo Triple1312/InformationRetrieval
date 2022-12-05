@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}
+    <title>Documents</title>
+{% endblock %}
+{% block content %}
+    <h1>Documents </h1>
+    <p>
+        <a href="/apiv1/">Back to Index</a>
+    </p>
+    <ul>
+        {% for d in documents %}
+        <li>
+            <a href="/apiv1/document_view/{{d.title}}/">
+                {{d.title}}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

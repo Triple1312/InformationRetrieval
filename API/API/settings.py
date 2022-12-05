@@ -55,7 +55,10 @@ ROOT_URLCONF = 'API.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['Client/templates'],
+        'DIRS': [
+            'Client/templates',
+            'TrainingAPI/templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

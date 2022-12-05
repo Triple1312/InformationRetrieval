@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}
+    <title>Document - {{document.title}}</title>
+{% endblock %}
+{% block content %}
+    <h1>Document Detail - {{document.title}} </h1>
+    <p>
+        <a href="/apiv1/document_view/">Back to Documents</a>
+    </p>
+    <ul>
+        <li>
+            Title: {{document.title}}
+        </li>
+        <li>
+            Location: {{document.abstract}}
+        </li>
+        <li>
+            {{document.abstract}}
+        </li>
+    </ul>
+{% endblock %}
