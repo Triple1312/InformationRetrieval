@@ -6,3 +6,4 @@ django-rest-multiple-models==2.1.3
 django-storages==1.13.1
 djangorestframework==3.13.1
 psycopg2-binary==2.9.1
+requests
