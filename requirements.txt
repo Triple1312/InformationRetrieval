@@ -7,3 +7,5 @@ django-storages==1.13.1
 djangorestframework==3.13.1
 psycopg2-binary==2.9.1
 requests
+pyPDF2
+spacy

@@ -7,6 +7,8 @@ from django.views import View
 from django.core.files.storage import FileSystemStorage
 from rest_framework.viewsets import ModelViewSet
 from .models import Document
+from .Predicter import summarize
+from PyPDF2 import PdfReader
 
 import os
 
@@ -31,6 +33,18 @@ def save_file(title: str, abstract: str, pdf_file) -> bool:
     except:
         return False
     return True
+
+
+def cache_pdf(pdf_file) -> str:
+    if not pdf_file or pdf_file == None:
+        return ""
+    if not os.path.exists("CACHE"):
+        os.mkdir("CACHE")
+
+    fs = FileSystemStorage()
+    filename: str = "CACHE/" + pdf_file.name
+    fs.save(filename, pdf_file)
+    return filename
 
 
 def document(request):
@@ -64,7 +78,34 @@ def document_detail(request, pk):
 
 
 def train(request):
-    pass
+    pdf = request.FILES['PDF']
+    return JsonResponse({'abstract': 'This is the abstract of the PDF file'})
+
+
+def predict(request):
+    pdf = request.FILES['PDF']
+    filename = cache_pdf(pdf)
+
+    if filename != "":
+        # read the pdf file
+        reader = PdfReader(filename)
+        text: str = ""
+        for page in reader.pages:
+            text += page.extractText()
+        # summarize the text
+        abstract = summarize(text, 0.4)
+
+        # delete the cached file
+        os.remove(filename)
+        return JsonResponse({
+                'Success': True,
+                'Abstract': abstract
+            })
+    else:
+        return JsonResponse({
+                'Success': False,
+            })
+
 
 
 def document_view(request):
