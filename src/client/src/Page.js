@@ -13,12 +13,12 @@ export default function Page(props) {
         const formData = new FormData();
         formData.append('file', file, {contentType: 'application/pdf'});
         console.log("post", formData);
-        axios.post('http://localhost:8000/apiv1/document/', formData, {
+        axios.post('http://localhost:8000/apiv1/predict', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         }).then((response) => {
-            setAbstract(response.data);
+            setAbstract(response.data.Abstract);
             setState("result");
         }).catch((error) => {console.log(error); setState("drop"); alert("Error: " + error)});
         setState("loading");
@@ -43,10 +43,10 @@ export default function Page(props) {
         }
         else {
             return (
-                <div>
+                <div >
                     <h3>Abstract</h3>
                     <br/>
-                    <p>{abstract}</p>
+                    <p style={{color: "ghostwhite"}}>{abstract}</p>
                 </div>
             )
 
@@ -54,7 +54,7 @@ export default function Page(props) {
     }
 
     return (
-        <div style={{backgroundColor:"#282c34"}}>
+        <div style={{backgroundColor:"#282c34", minHeight: "100vh"}}>
             <div id="topbar" >
                 <h2>IR Front End</h2>
                 {(state === "result") ? <button onClick={() => setState("drop")}>Back</button> : null}

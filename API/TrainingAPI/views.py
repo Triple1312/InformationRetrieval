@@ -83,7 +83,7 @@ def train(request):
 
 
 def predict(request):
-    pdf = request.FILES['PDF']
+    pdf = request.FILES['file']
     filename = cache_pdf(pdf)
 
     if filename != "":
@@ -93,7 +93,7 @@ def predict(request):
         for page in reader.pages:
             text += page.extractText()
         # summarize the text
-        abstract = summarize(text, 0.4)
+        abstract = summarize(text, 0.1)
 
         # delete the cached file
         os.remove(filename)
