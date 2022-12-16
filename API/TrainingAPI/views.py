@@ -9,6 +9,7 @@ from rest_framework.viewsets import ModelViewSet
 from .models import Document
 from .Predicter import summarize
 from PyPDF2 import PdfReader
+from .Train import *
 
 import os
 
@@ -77,12 +78,32 @@ def document_detail(request, pk):
 
 
 
-def train(request):
-    pdf = request.FILES['PDF']
-    return JsonResponse({'abstract': 'This is the abstract of the PDF file'})
+def train(request, percentage: str):
+    success: bool = True
+    abstract: str = ""
+    jaccard: float = 0.0
+    try:
+        pdf = request.FILES['file']
+        filename = cache_pdf(pdf)
+        if filename != "":
+            # read the pdf file
+            act_abstract, text = get_abstract_and_text(filename)
+            abstract = summarize(text, float(percentage))
+            # compare the actual abstract with the predicted abstract
+            jaccard = get_similarity_index(act_abstract, abstract)
+        else:
+            success = False
+    except:
+        success = False
+
+    return JsonResponse({
+        'Success': success,
+        'Abstract': abstract,
+        'Jaccard': jaccard
+    })
 
 
-def predict(request):
+def predict(request, percentage: str):
     pdf = request.FILES['file']
     filename = cache_pdf(pdf)
 
@@ -93,7 +114,7 @@ def predict(request):
         for page in reader.pages:
             text += page.extractText()
         # summarize the text
-        abstract = summarize(text, 0.1)
+        abstract = summarize(text, float(percentage))
 
         # delete the cached file
         os.remove(filename)
