@@ -15,6 +15,7 @@
     width: 100vw;
     background-color: cornflowerblue;
     position: fixed;
+    z-index: 999;
     top: 0;
 }
 
